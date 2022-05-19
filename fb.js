@@ -51,7 +51,7 @@ var loadImages = function(){
 	land.onload = onImgLoad;
 	
 	bird = new Image();
-	bird.src = 'images/bird.png';
+	bird.src = 'images/bird2.png';
 	bird.onload = onImgLoad;
 	
 	pipe = new Image();
@@ -93,6 +93,24 @@ var initCanvas = function(){
 	ctx = canvas.getContext('2d');
 	canvas.width = width = window.innerWidth;
 	canvas.height = height = window.innerHeight;
+	// testtest start
+	const text = `it should be a interesting things.
+	it s my pleasure that if this can give you some encouragement.
+	i ever said that it would have the next version when i am boring and i have free time.
+	i think that this time has come.(smile and cry emotion)
+	the first version is the song from yujiayun which called with you
+	the second version is a small game which called flappy bird. 
+	let us start the journey with this small game...
+	A long long time ago, there is a pretty princess which called momo.
+	as a dancing and flying genie,she wants to know what the love is. 
+	she dreams to fly through the forest to chase her happiness and freedom.
+	Legend has it that when she arrives,the god will help her get what she wants. 
+	But before that,
+	there are many pipes which stop her advance.
+	so as a lovely genie,have a rest when you are tried of the study and boring life,
+	go go go ...`;
+	ctx.fillText(text, 10, height * 0.1);
+	// testtest end
 	if(is_touch_device()){
 		canvas.addEventListener("touchend", function(e) { e.preventDefault(); }, false);
         canvas.addEventListener("touchstart", function(e) {
@@ -167,7 +185,8 @@ var drawBird = function(){
 //	ctx.translate(width * 0.35 + 17, birdY + 12);
 //	var deg = -Math.atan(birdV / 2) / 3.14159;
 //	ctx.rotate(deg);
-	ctx.drawImage(bird, 0, birdN * 24, bird.width, bird.height / 4, birdPos, birdY, bird.width, bird.height / 4);
+//	ctx.drawImage(bird, 0, birdN * 24, bird.width, bird.height / 4, birdPos, birdY, bird.width, bird.height / 4);
+ctx.drawImage(bird, 0, 0, bird.width, bird.height, birdPos, birdY, bird.width, bird.height);
 //	ctx.rotate(-deg);
 //	ctx.translate(-width * 0.35 - 17, -birdY - 12);
 	birdF = (birdF + 1) % 6;
@@ -222,11 +241,11 @@ var drawCanvas = function(){
 	drawSky();
 	for(var i = pipeSt; i < pipeNumber; ++i){
 		// 修改start
-		const upText = "helloWorld";
-		const downText= "amofighting";
+		const upText = "mytreasure";
+		const downText= "momofighting";
 		ctx.fillStyle = '#b2cf87';
-		ctx.fillText(i<10?upText[i]:"A", width - dist + i * 220 + 10, pipes[i] + 50);
-		ctx.fillText(i<8?downText[i]:"B", width - dist + i * 220 + 10, pipes[i] + 144 + delta);
+		ctx.fillText(i<10?upText[i]:"", width - dist + i * 220 + 10, pipes[i] + 50);
+		ctx.fillText(i<12?downText[i]:"", width - dist + i * 220 + 10, pipes[i] + 144 + delta);
 		// 修改end
 		drawPipe(width - dist + i * 220, pipes[i]);
 		if(mode == 2){
