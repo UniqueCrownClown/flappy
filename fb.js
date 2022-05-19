@@ -221,6 +221,13 @@ var drawCanvas = function(){
 	clearCanvas();
 	drawSky();
 	for(var i = pipeSt; i < pipeNumber; ++i){
+		// 修改start
+		const upText = "helloWorld";
+		const downText= "amofighting";
+		ctx.fillStyle = '#b2cf87';
+		ctx.fillText(i<10?upText[i]:"A", width - dist + i * 220 + 10, pipes[i] + 50);
+		ctx.fillText(i<8?downText[i]:"B", width - dist + i * 220 + 10, pipes[i] + 144 + delta);
+		// 修改end
 		drawPipe(width - dist + i * 220, pipes[i]);
 		if(mode == 2){
 			if(pipesDir[i]){
