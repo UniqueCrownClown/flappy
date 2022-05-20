@@ -8,6 +8,7 @@ var score, maxScore;
 var dropSpeed;
 var flashlight_switch = false, hidden_switch = false;
 var mode, delta;
+var isSpecial;// 是否特殊模式
 var wechat = false;
 var playend = false, playdata = [];
 var wxData;
@@ -93,24 +94,6 @@ var initCanvas = function(){
 	ctx = canvas.getContext('2d');
 	canvas.width = width = window.innerWidth;
 	canvas.height = height = window.innerHeight;
-	// testtest start
-	const text = `it should be a interesting things.
-	it s my pleasure that if this can give you some encouragement.
-	i ever said that it would have the next version when i am boring and i have free time.
-	i think that this time has come.(smile and cry emotion)
-	the first version is the song from yujiayun which called with you
-	the second version is a small game which called flappy bird. 
-	let us start the journey with this small game...
-	A long long time ago, there is a pretty princess which called momo.
-	as a dancing and flying genie,she wants to know what the love is. 
-	she dreams to fly through the forest to chase her happiness and freedom.
-	Legend has it that when she arrives,the god will help her get what she wants. 
-	But before that,
-	there are many pipes which stop her advance.
-	so as a lovely genie,have a rest when you are tried of the study and boring life,
-	go go go ...`;
-	ctx.fillText(text, 10, height * 0.1);
-	// testtest end
 	if(is_touch_device()){
 		canvas.addEventListener("touchend", function(e) { e.preventDefault(); }, false);
         canvas.addEventListener("touchstart", function(e) {
@@ -160,6 +143,25 @@ var drawLand = function(){
 	var tmp = Math.floor(dist - width * 0.65) % 220;
 	if(dist >= width * 0.65 && Math.abs(tmp) <= 1){
 		score++;
+		// testtest start
+		if (score === 20) {
+			// special模式,20分的时候,中止游戏
+			clearInterval(animation);
+			death = 1;
+			cavToggle(0,0);
+			const text =  `
+			god: Congratulations,my lovely dancing princess,you overcome difficulties 
+			and fly through the pipes successfully.now i can fulfill your dreams.what do you really want?</br>
+			momo: i want love,happiness and freedom.but i do not know what things can make me achieve them.<br/>
+			god: Um...all you should do is to slow down and enjoy right now.<br/>
+			momo: oh,just like this?</br>
+			god: Um...and cherish the people around you </br>
+			momo: god,can you tell me what love is?</br>
+			god: my treasure.Love is You!!!</br>
+			`;
+			ContentControl("Last words",text,"back");
+		}
+		// testtest end
 	}
 }
 
@@ -185,8 +187,8 @@ var drawBird = function(){
 //	ctx.translate(width * 0.35 + 17, birdY + 12);
 //	var deg = -Math.atan(birdV / 2) / 3.14159;
 //	ctx.rotate(deg);
-//	ctx.drawImage(bird, 0, birdN * 24, bird.width, bird.height / 4, birdPos, birdY, bird.width, bird.height / 4);
-ctx.drawImage(bird, 0, 0, bird.width, bird.height, birdPos, birdY, bird.width, bird.height);
+	// ctx.drawImage(bird, 0, birdN * 24, bird.width, bird.height / 4, birdPos, birdY, bird.width, bird.height / 4);
+	ctx.drawImage(bird, 0, 0, bird.width, bird.height, birdPos, birdY, bird.width, bird.height);
 //	ctx.rotate(-deg);
 //	ctx.translate(-width * 0.35 - 17, -birdY - 12);
 	birdF = (birdF + 1) % 6;
@@ -240,13 +242,13 @@ var drawCanvas = function(){
 	clearCanvas();
 	drawSky();
 	for(var i = pipeSt; i < pipeNumber; ++i){
-		// 修改start
-		const upText = "mytreasure";
+		// testtest start
+		// const upText = "treasure";
 		const downText= "momofighting";
 		ctx.fillStyle = '#b2cf87';
-		ctx.fillText(i<10?upText[i]:"", width - dist + i * 220 + 10, pipes[i] + 50);
+		ctx.fillText(i<12?downText[i]:"", width - dist + i * 220 + 10, pipes[i] + 50);
 		ctx.fillText(i<12?downText[i]:"", width - dist + i * 220 + 10, pipes[i] + 144 + delta);
-		// 修改end
+		// testtest end
 		drawPipe(width - dist + i * 220, pipes[i]);
 		if(mode == 2){
 			if(pipesDir[i]){
@@ -308,9 +310,23 @@ var jump = function(){
 		birdV = 6;
 }
 
-var easy, normal, hard;
+var special, easy, normal, hard;
+function specialMode() {
+	isSpecial = true;
+	special.style["box-shadow"] = "0 0 0 2px #165CF3";
+	easy.style["box-shadow"] = "";
+	normal.style["box-shadow"] = "";
+	hard.style["box-shadow"] = "";
+	clearInterval(animation);
+	dropSpeed = 0.3;
+	mode = 0;
+	delta = 100;
+	initCanvas();
+}
 
 function easyMode(){
+	isSpecial = false;
+	special.style["box-shadow"] = "";
 	easy.style["box-shadow"] = "0 0 0 2px #165CF3";
 	normal.style["box-shadow"] = "";
 	hard.style["box-shadow"] = "";
@@ -322,6 +338,8 @@ function easyMode(){
 }
 
 function normalMode(){
+	isSpecial = false;
+	special.style["box-shadow"] = "";
 	easy.style["box-shadow"] = "";
 	normal.style["box-shadow"] = "0 0 0 2px #165CF3";
 	hard.style["box-shadow"] = "";
@@ -333,6 +351,7 @@ function normalMode(){
 }
 
 function hardMode(){
+	isSpecial = false;
 	easy.style["box-shadow"] = "";
 	normal.style["box-shadow"] = "";
 	hard.style["box-shadow"] = "0 0 0 2px #165CF3";
@@ -353,10 +372,67 @@ function hidden(){
 	hidden_switch ^= 1;
 }
 
+function gameLoad() {
+	maxScore = 0;
+	dropSpeed = 0.3;
+	mode = 0;
+	delta = 100;
+	isSpecial = true;
+	initCanvas();
+	special = document.getElementById("special");
+	special.onclick = specialMode;
+	easy = document.getElementById("easy");
+    easy.onclick = easyMode;
+	normal = document.getElementById("normal");
+    normal.onclick = normalMode;
+	hard = document.getElementById("hard");
+    hard.onclick = hardMode;
+	document.getElementById("flashlight").onclick = flashlight;
+	//document.getElementById("hidden").onclick = hidden;
+	window.onresize = function() {
+		canvas.width = width = window.innerWidth;
+		canvas.height = height = window.innerHeight;
+		drawCanvas();
+	}
+}
+
+function cavToggle(width,height) {
+	canvas.width = width;
+	canvas.height = height;
+}
+
+function ContentControl (title,text,fnText) {
+	document.getElementById("special").style.display = "none";
+	document.getElementById("easy").style.display = "none";
+	document.getElementById("normal").style.display = "none";
+	document.getElementById("hard").style.display = "none";
+	document.getElementById("flashlight").style.display = "none";
+	var h3 = document.createElement("h3");
+	var p = document.createElement("p");
+	var btn = document.createElement("Button");
+	h3.innerText = title;
+	p.innerHTML = text;
+	btn.innerText = fnText;
+	document.body.appendChild(h3);
+	document.body.appendChild(p);
+	document.body.appendChild(btn);
+	btn.onclick = function(){
+		document.getElementById("special").style.display = "inline-block";
+		document.getElementById("easy").style.display = "inline-block";
+		document.getElementById("normal").style.display = "inline-block";
+		document.getElementById("hard").style.display = "inline-block";
+		document.getElementById("flashlight").style.display = "block";
+		h3.remove();
+		p.remove();
+		btn.remove();
+		gameLoad();
+	};
+}
+
 window.onload = function(){
     //document.addEventListener("touchend", function(e) { e.preventDefault(); }, false);
-    mode = 0;
-    score = 0;
+    // mode = 0;
+    // score = 0;
     playdata = [0, 0];
     if(window.window.WeixinApi || window.WeixinJSBridge) {
         wechat = true;
@@ -405,22 +481,21 @@ window.onload = function(){
             Api.generalShare(wxData, wxCallbacks);
         });
     }
-	maxScore = 0;
-	dropSpeed = 0.3;
-	mode = 0;
-	delta = 100;
-	initCanvas();
-	easy = document.getElementById("easy");
-    easy.onclick = easyMode;
-	normal = document.getElementById("normal");
-    normal.onclick = normalMode;
-	hard = document.getElementById("hard");
-    hard.onclick = hardMode;
-	document.getElementById("flashlight").onclick = flashlight;
-	//document.getElementById("hidden").onclick = hidden;
-	window.onresize = function() {
-		canvas.width = width = window.innerWidth;
-		canvas.height = height = window.innerHeight;
-		drawCanvas();
-	}
+	const text = `it should be a interesting things.
+	it s my pleasure that if this can give you some encouragement.
+	i ever said that it would have the next version when i am boring and have free time.
+	i think that this time has come.(smile and cry emotion)
+	the first version is the song from yujiayun which called with you.
+	the second version is a small game which called flappy bird. 
+	let us start the journey with this small game...
+	A long long time ago, there is a pretty genie which called momo.
+	as a dancing and flying princess,she wants to know what the love is. 
+	she dreams to fly through the forest to chase her happiness and freedom.
+	Legend has it that when she arrives,the god will help her get what she wants. 
+	But before that,
+	there are many pipes which stop her advance.
+	what she should do is to fly through by not hit the pipes.
+	so as a lovely genie,have a rest when you are tried of the study and boring life,
+	go go go ...`;
+	ContentControl("introduction",text,"Start Journey");
 }
