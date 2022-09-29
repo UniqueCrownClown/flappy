@@ -52,7 +52,7 @@ var loadImages = function(){
 	land.onload = onImgLoad;
 	
 	bird = new Image();
-	bird.src = 'images/bird2.png';
+	bird.src = 'images/bird.png';
 	bird.onload = onImgLoad;
 	
 	pipe = new Image();
@@ -144,8 +144,8 @@ var drawLand = function(){
 	if(dist >= width * 0.65 && Math.abs(tmp) <= 1){
 		score++;
 		// testtest start
-		if (score === 20) {
-			// special模式,20分的时候,中止游戏
+		if (score === 8) {
+			// special模式,8分的时候,中止游戏
 			clearInterval(animation);
 			death = 1;
 			cavToggle(0,0);
@@ -187,8 +187,8 @@ var drawBird = function(){
 //	ctx.translate(width * 0.35 + 17, birdY + 12);
 //	var deg = -Math.atan(birdV / 2) / 3.14159;
 //	ctx.rotate(deg);
-	// ctx.drawImage(bird, 0, birdN * 24, bird.width, bird.height / 4, birdPos, birdY, bird.width, bird.height / 4);
-	ctx.drawImage(bird, 0, 0, bird.width, bird.height, birdPos, birdY, bird.width, bird.height);
+	ctx.drawImage(bird, 0, birdN * 24, bird.width, bird.height / 4, birdPos, birdY, bird.width, bird.height / 4);
+	// ctx.drawImage(bird, 0, 0, bird.width, bird.height, birdPos, birdY, bird.width, bird.height);
 //	ctx.rotate(-deg);
 //	ctx.translate(-width * 0.35 - 17, -birdY - 12);
 	birdF = (birdF + 1) % 6;
@@ -243,11 +243,10 @@ var drawCanvas = function(){
 	drawSky();
 	for(var i = pipeSt; i < pipeNumber; ++i){
 		// testtest start
-		// const upText = "treasure";
-		const downText= "momofighting";
+		const downText= "mo";
 		ctx.fillStyle = '#b2cf87';
-		ctx.fillText(i<12?downText[i]:"", width - dist + i * 220 + 10, pipes[i] + 50);
-		ctx.fillText(i<12?downText[i]:"", width - dist + i * 220 + 10, pipes[i] + 144 + delta);
+		// ctx.fillText(i % 2 == 1?downText[1]:downText[0], width - dist + i * 220 + 10, pipes[i] + 50);
+		ctx.fillText(i % 2 == 1?downText[1]:downText[0], width - dist + i * 220 + 10, pipes[i] + 144 + delta);
 		// testtest end
 		drawPipe(width - dist + i * 220, pipes[i]);
 		if(mode == 2){
