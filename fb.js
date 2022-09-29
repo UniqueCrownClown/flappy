@@ -144,20 +144,20 @@ var drawLand = function(){
 	if(dist >= width * 0.65 && Math.abs(tmp) <= 1){
 		score++;
 		// testtest start
-		if (score === 8) {
-			// special模式,8分的时候,中止游戏
+		if (score === 4 && isSpecial) {
+			// special模式,4分的时候,中止游戏
 			clearInterval(animation);
 			death = 1;
 			cavToggle(0,0);
 			const text =  `
 			god: Congratulations,my lovely dancing princess,you overcome difficulties 
-			and fly through the pipes successfully.now i can fulfill your dreams.what do you really want?</br>
+			and fly through the pipes successfully.now you have a wish.what do you really want?</br>
 			momo: i want love,happiness and freedom.but i do not know what things can make me achieve them.<br/>
-			god: Um...all you should do is to slow down and enjoy right now.<br/>
-			momo: oh,just like this?</br>
-			god: Um...and cherish the people around you </br>
+			god: Um...,baby,all you should do is to slow down and enjoy right now.<br/>
+			momo: Um...,just like this?</br>
+			god: and cherish the people around you </br>
 			momo: god,can you tell me what love is?</br>
-			god: my treasure.Love is You!!!</br>
+			god: mo,my treasure.Love is You!!</br>
 			`;
 			ContentControl("Last words",text,"back");
 		}
@@ -243,10 +243,12 @@ var drawCanvas = function(){
 	drawSky();
 	for(var i = pipeSt; i < pipeNumber; ++i){
 		// testtest start
-		const downText= "mo";
-		ctx.fillStyle = '#b2cf87';
-		// ctx.fillText(i % 2 == 1?downText[1]:downText[0], width - dist + i * 220 + 10, pipes[i] + 50);
-		ctx.fillText(i % 2 == 1?downText[1]:downText[0], width - dist + i * 220 + 10, pipes[i] + 144 + delta);
+		if(isSpecial){
+			const downText= "mo";
+			ctx.fillStyle = '#b2cf87';
+			// ctx.fillText(i % 2 == 1?downText[1]:downText[0], width - dist + i * 220 + 10, pipes[i] + 50);
+			ctx.fillText(i % 2 == 1?downText[1]:downText[0], width - dist + i * 220 + 18, pipes[i] + 144 + delta);
+		}
 		// testtest end
 		drawPipe(width - dist + i * 220, pipes[i]);
 		if(mode == 2){
@@ -480,21 +482,17 @@ window.onload = function(){
             Api.generalShare(wxData, wxCallbacks);
         });
     }
-	const text = `it should be a interesting things.
-	it s my pleasure that if this can give you some encouragement.
-	i ever said that it would have the next version when i am boring and have free time.
-	i think that this time has come.(smile and cry emotion)
-	the first version is the song from yujiayun which called with you.
-	the second version is a small game which called flappy bird. 
-	let us start the journey with this small game...
+	// testtest start
+	const text = `it s my pleasure that if this can give you some encouragement.
+	let us start the journey with this familiar game...
 	A long long time ago, there is a pretty genie which called momo.
 	as a dancing and flying princess,she wants to know what the love is. 
 	she dreams to fly through the forest to chase her happiness and freedom.
-	Legend has it that when she arrives,the god will help her get what she wants. 
+	Legend has it that the god will help her get what she wants,when she arrives. 
 	But before that,
 	there are many pipes which stop her advance.
 	what she should do is to fly through by not hit the pipes.
-	so as a lovely genie,have a rest when you are tried of the study and boring life,
-	go go go ...`;
+	so as a lovely genie,go go go ...`;
 	ContentControl("introduction",text,"Start Journey");
+	// testtest start
 }
