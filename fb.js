@@ -144,22 +144,27 @@ var drawLand = function(){
 	if(dist >= width * 0.65 && Math.abs(tmp) <= 1){
 		score++;
 		// testtest start
-		if (score === 4 && isSpecial) {
+		if (score === 2 && isSpecial) {
 			// special模式,4分的时候,中止游戏
 			clearInterval(animation);
 			death = 1;
 			cavToggle(0,0);
 			const text =  `
-			god: Congratulations,my lovely dancing princess,you overcome difficulties 
-			and fly through the pipes successfully.now you have a wish.what do you really want?</br>
-			momo: i want love,happiness and freedom.but i do not know what things can make me achieve them.<br/>
+			god: Congratulations,my lovely dancing princess,you overcome difficulties and fly through the pipes successfully.now tell me what you really want?</br>
+			mo: i want love,happiness and freedom...<br/>
 			god: Um...,baby,all you should do is to slow down and enjoy right now.<br/>
-			momo: Um...,just like this?</br>
 			god: and cherish the people around you </br>
-			momo: god,can you tell me what love is?</br>
-			god: mo,my treasure.Love is You!!</br>
+			mo: god,can you tell me what love is?</br>
+			god: Love is You!!</br>
 			`;
-			ContentControl("Last words",text,"back");
+			const cText = `翻译:<br/>
+			神: 恭喜,我可爱的公主,你成功穿越了管道,现在告诉我你想要啥?</br>
+			mo: 我想要爱,幸福,自由...</br>
+			神: 孩子,你所需要做的是慢下来和享受生活</br>
+			神: 还有珍视当下</br>
+			mo: 神,你能告诉我爱是什么吗</br>
+			神: 爱是你自己...`;
+			ContentControl("Last words",text + cText,"back");
 		}
 		// testtest end
 	}
@@ -483,16 +488,21 @@ window.onload = function(){
         });
     }
 	// testtest start
-	const text = `it s my pleasure that if this can give you some encouragement.
-	let us start the journey with this familiar game...
-	A long long time ago, there is a pretty genie which called momo.
-	as a dancing and flying princess,she wants to know what the love is. 
+	const text = `let us start the journey with this familiar mini game...
+	A long long time ago, there is a pretty princess which called mo.
+	as a dancing genie,she wants to know what the love is.
 	she dreams to fly through the forest to chase her happiness and freedom.
-	Legend has it that the god will help her get what she wants,when she arrives. 
-	But before that,
-	there are many pipes which stop her advance.
-	what she should do is to fly through by not hit the pipes.
-	so as a lovely genie,go go go ...`;
-	ContentControl("introduction",text,"Start Journey");
+	Legend has it that the god will achieve her dreams,when she arrives the end of forest.
+	But before that,there are many pipes which stop her advance.
+	what she should do is to fly through by not hit the pipes...<br/>`;
+	const cText = `翻译:<br/>
+	让我们开始用这个熟悉的小游戏开始旅途,
+	很久很久以前,有一位漂亮的公主叫mo
+	做为一名舞蹈的精灵,她想知道什么是爱
+	她想要穿越深林去追寻她的幸福和自由
+	传说神会完成她的愿望当她到达深林的尽头
+	但在那之前有许多管道阻止她的前进
+	他需要不接触管道穿梭其中...`;
+	ContentControl("introduction",text + cText,"Start Journey");
 	// testtest start
 }
